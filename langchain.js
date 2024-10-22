@@ -1,10 +1,15 @@
+const { ChatOpenAI  } = require ("@langchain/openai");
 const { config } = require('dotenv');
-const { ChatOpenAI } = require('@langchain/openai');
-
 
 config();
 
-const llm = new ChatOpenAI();
+const llm = new ChatOpenAI ({
+  model: "gpt-4o",
+  apiKey: process.env.OPENAI_API_KEY,
+  configuration: {
+    baseURL: process.env.OPENAI_ENDPOINT_URL,
+  }
+});
 
 const run = async () => {
     const aiMsg = await llm.invoke([
@@ -22,3 +27,4 @@ const run = async () => {
 }
 
 run();
+
