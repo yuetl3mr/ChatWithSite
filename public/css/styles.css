@@ -36,6 +36,9 @@ nav {
     cursor: pointer;
 }
 
+.button a {
+    margin-top: 5px;
+}
 
 .button button {
     color : gray;
@@ -57,6 +60,7 @@ nav {
     margin-right: 20px;
 }
 .auth .btn {
+    margin-top: 5px;
     margin-left: 14px;
     padding: 6px 12px;
     color: white;
@@ -76,15 +80,22 @@ nav {
 
 /* End header  */
 
+.chat-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 /* Begin typing area  */
-.typing-area {
+
+.typing-area{
     position: fixed;
-    width: 50%;
+    width: 100%;
     bottom : 0;
     margin-bottom: 20px;
-    left: 50%; 
-    transform: translateX(-50%);
-}
+    /* left: 50%; 
+    transform: translateX(-50%); */ 
+} 
 
 .typing-area p {
     color: white;
@@ -128,5 +139,90 @@ nav {
     height: 56px;
     width: 100%;
     display: flex;
+    position: relative;
+}
+
+.typing-area .input-wrapper .icon {
+    position: absolute;
+    right: 0;
+    outline: none;
 }
 /* End typing area  */
+
+/* Chat list  */
+
+.chat-list {
+    padding: 2rem 1rem 12rem;
+    max-height: 100vh;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.chat-list .message, .typing-form {
+    max-width: 1000px;
+    margin: 0 auto;
+    /* align-items: center;  */
+}
+
+
+.chat-list .message.incoming,
+.chat-list .message.outgoing {
+    margin-top: 1.5rem;
+}
+
+.chat-list .message .message-content {
+    display: flex;
+    gap: 1.5rem;
+    width: 100%;
+    align-items: center;
+}
+
+.chat-list .message .text {
+    color: white;
+}
+
+.chat-list .message.loading .text {
+    display: none;
+}
+
+.chat-list .message .avatar {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    align-self: flex-start;
+}
+
+.chat-list .loading-indicator {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.chat-list .message.loading .loading-indicator {
+    display: flex;
+}
+
+.chat-list .loading-indicator .loading-bar {
+    height: 11px;
+    width: 100%;
+    border-radius: 0.14rem;
+    background: linear-gradient(to right, #4285f4, rgb(21, 21, 21), #4285f4);
+    animation: animate 3s linear infinite;
+}
+
+.chat-list .loading-indicator .loading-bar:last-child {
+    width: 70%;
+}
+
+@keyframes animate {
+    0% {
+        background-position: -800px 0;
+    }
+    100% {
+        background-position: 800px 0;
+    }
+}
+
+/* End chat list  */
