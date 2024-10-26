@@ -8,6 +8,8 @@ const app = express();
 
 app.use(methodOverride("_method"));
 
+app.use(express.static(`${__dirname}/public`));
+
 // Pug
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");

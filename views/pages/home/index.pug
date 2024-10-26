@@ -1,4 +1,10 @@
 extends ../../layouts/default.pug
 
 block main 
-    h1 Hello
+    .chat-container
+        .typing-area 
+            form(action="#" class="typing-form")
+                .input-wrapper
+                    input(type="text" placeholder="Enter message here" class="typing-input" required)
+                    button  
+                        i.fa-regular.fa-paper-plane.icon

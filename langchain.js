@@ -1,9 +1,11 @@
-const { ChatOpenAI  } = require ("@langchain/openai");
+const { ChatOpenAI } = require("@langchain/openai");
+const { PromptTemplate } = require("@langchain/core/prompts");
 const { config } = require('dotenv');
 
 config();
 
-const llm = new ChatOpenAI ({
+// initial 
+const llm = new ChatOpenAI({
   model: "gpt-4o",
   apiKey: process.env.OPENAI_API_KEY,
   configuration: {
@@ -11,19 +13,20 @@ const llm = new ChatOpenAI ({
   }
 });
 
+// chaining 
+
 const run = async () => {
-    const aiMsg = await llm.invoke([
-        {
-            role: "system",
-            content:
-                "You are a helpful assistant that translates English to Vietnamese. Translate the user sentence.",
-        },
-        {
-            role: "user",
-            content: "I love programming.",
-        },
-    ]);
-    console.log(aiMsg.content);
+  const prompt = new PromptTemplate({
+    template: "How to say {input} in {output_language}:\n",
+    inputVariables: ["input", "output_language"],
+  });
+
+  const chain = prompt.pipe(llm);
+  const res = await chain.invoke({
+    output_language: "Vietnamese",
+    input: "I love programming.",
+  });
+  console.log(res.content);
 }
 
 run();
