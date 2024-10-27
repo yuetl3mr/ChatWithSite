@@ -1,3 +1,4 @@
+// Chat script
 const typingForm = document.querySelector(".typing-form");
 const chatList = document.querySelector(".chat-list");
 var userMessage;
@@ -85,3 +86,21 @@ typingForm.addEventListener("submit", (e) => {
     e.preventDefault();
     handleOutgoingChat();
 })
+
+// Sidebar script
+const sidebar = document.querySelector('.sidebar');
+const toggle = document.querySelector('.toggle');
+const content = document.querySelector('.content');
+const header = document.querySelector('.header');
+
+
+toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('close');
+    if (sidebar.classList.contains('close')) {
+        content.style.marginLeft = '0px'; 
+        header.style.paddingLeft = '0px';
+    } else {
+        content.style.marginLeft = '400px'; 
+        header.style.paddingLeft = '400px';
+    }
+});
