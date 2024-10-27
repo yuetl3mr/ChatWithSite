@@ -8,6 +8,19 @@ const createMessageElement = (content, ...classes) => {
     return div;
 }
 
+const showTypingEffect = (text, textElement) => {
+    const words = text.split(' ');
+    let currIndex = 0;
+
+    const typingInterval = setInterval(() => {
+        textElement.innerText += (currIndex === 0 ? '' : ' ') + words[currIndex++];
+
+        if(currIndex === words.length){
+            clearInterval(typingInterval);
+        }
+    }, 75);
+}
+
 const showLoadingAnimation = () => {
     const html = `
         <div class="message-content">
@@ -56,7 +69,8 @@ const handleIncomingChat = async (incomingMessageDiv) => {
         }
 
         const data = await response.json();
-        textElement.innerText = data.kwargs.content;
+        // textElement.innerText = data.kwargs.content;
+        showTypingEffect(data.kwargs.content, textElement);
         console.log(data); 
         console.log(data.kwargs.content); 
     } catch (error) {
