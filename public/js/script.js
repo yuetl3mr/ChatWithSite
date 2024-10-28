@@ -16,7 +16,7 @@ const showTypingEffect = (text, textElement) => {
     const typingInterval = setInterval(() => {
         textElement.innerText += (currIndex === 0 ? '' : ' ') + words[currIndex++];
 
-        if(currIndex === words.length){
+        if (currIndex === words.length) {
             clearInterval(typingInterval);
         }
     }, 75);
@@ -70,12 +70,12 @@ const handleIncomingChat = async (incomingMessageDiv) => {
         }
 
         const data = await response.json();
-        // textElement.innerText = data.kwargs.content;
+        
         showTypingEffect(data.kwargs.content, textElement);
-        console.log(data); 
-        console.log(data.kwargs.content); 
+        console.log(data);
+        console.log(data.kwargs.content);
     } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
+        console.error(error);
     } finally {
         incomingMessageDiv.classList.remove("loading");
     }
@@ -87,7 +87,7 @@ typingForm.addEventListener("submit", (e) => {
     handleOutgoingChat();
 })
 
-// Sidebar script
+// Sidebar expand
 const sidebar = document.querySelector('.sidebar');
 const toggle = document.querySelector('.toggle');
 const content = document.querySelector('.content');
@@ -97,10 +97,10 @@ const header = document.querySelector('.header');
 toggle.addEventListener('click', () => {
     sidebar.classList.toggle('close');
     if (sidebar.classList.contains('close')) {
-        content.style.marginLeft = '0px'; 
+        content.style.marginLeft = '0px';
         header.style.paddingLeft = '0px';
     } else {
-        content.style.marginLeft = '400px'; 
+        content.style.marginLeft = '400px';
         header.style.paddingLeft = '400px';
     }
 });

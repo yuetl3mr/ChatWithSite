@@ -16,13 +16,12 @@ module.exports.index = async (req, res) => {
     const inputText = req.body.input;
     console.log(inputText);
     const prompt = new PromptTemplate({
-        template: "How to say {input} in {output_language}:\n",
-        inputVariables: ["input", "output_language"],
+        template: "Suggest ways to complete {input} tasks effectively? Reply in short.\n",
+        inputVariables: ["input"],
     });
 
     const chain = prompt.pipe(llm);
     const out = await chain.invoke({
-        output_language: "Vietnamese",
         input: inputText,
     });
     res.json(out);

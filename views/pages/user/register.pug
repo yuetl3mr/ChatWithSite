@@ -1,0 +1,26 @@
+extends ../../layouts/auth.pug
+
+block main 
+    section
+        .form-box
+            .form-value
+                form
+                    h2 Login
+                    .inputbox
+                        ion-icon(name="mail-outline")
+                        input(type="email" required)
+                        label Email
+                    .inputbox
+                        ion-icon(name="lock-closed-outline")
+                        input(type="password" required)
+                        label Password
+                    .forget
+                        label
+                            input(type="checkbox")
+                            | Remember Me
+                        a(href="#") Forgot Password
+                    button Log In
+                    .register
+                        p 
+                            | Don't have an account? 
+                            a(href="#") Sign Up
