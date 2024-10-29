@@ -21,7 +21,7 @@ const index = async () => {
 
     const chain = prompt.pipe(llm);
     const out = await chain.invoke({
-        input: "What is manga",
+        input: "hello",
     });
     console.log(out.content);
 }

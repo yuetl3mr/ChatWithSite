@@ -45,9 +45,9 @@ const index = async () => {
         const allSplits = await textSplitter.splitDocuments(docs);
 
         const embeddings = new OpenAIEmbeddings({
-            apiKey: process.env.OPENAI_API_KEY,
+            apiKey: "sk-dfFlNOrO51QLzF8JI8gpi8IXEqW7krJ71dglXauGvX2QT4Dp",
             configuration: {
-                baseURL: process.env.OPENAI_ENDPOINT_URL,
+                baseURL: "https://open.keyai.shop/v1/",
             }
         },
         );
@@ -81,7 +81,7 @@ const index = async () => {
             messages: [new HumanMessage("Can LangSmith help test my LLM applications?")],
         });
 
-        console.log(result);
+        console.log(result.answer);
     } catch (error) {
         console.log(error);
     }
