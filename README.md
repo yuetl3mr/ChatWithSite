@@ -1,6 +1,10 @@
 ﻿# NotebookAI
  
-NotebookAI is a website that integrates AI to help users chat with their own data, summarize, translate text, and create notes based on AI responses.
+NotebookAI is a website that integrates AI to help users chat with their own data or chat with any website in the world.
+
+## Demo
+
+https://github.com/user-attachments/assets/a1f702e8-8746-49ac-b702-f92d2e7af68f
 
 ## Installation
 
