@@ -1,27 +1,24 @@
 extends ../../layouts/default.pug
 
 block main 
-    .chat-container
-        .typing-area 
-            form(action="/response" method="POST" class="typing-form" id="message")
-                .input-wrapper
-                    input(type="text" placeholder="Enter message here" class="typing-input" required)
-                    button(type="submit") 
-                        i.fa-regular.fa-paper-plane.icon
-    .chat-list 
-        //- .message.outgoing 
-        //-     .message-content 
-        //-         img(src="images/avt.jpg" alt="" class="avatar")
-        //-         p.text Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        //- .message.incoming 
-        //-     .message-content 
-        //-         img(src="images/ai.png" alt="" class="avatar")
-        //-         p.text Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        //- .message.incoming.loading
-        //-     .message-content 
-        //-         img(src="images/ai.png" alt="" class="avatar")
-        //-         p.text Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-        //-         .loading-indicator
-        //-             .loading-bar
-        //-             .loading-bar
-        //-             .loading-bar
+    .welcome
+        h1 Welcome to NotebookAI
+        .notebook 
+            h2 My Notebooks 
+            .mat-divider
+            .action-container
+                button.create Create new
+            .note-list 
+                .card
+                    h4.text Untitled notebook 
+                    p.text Oct 28, 2024 - 0 sources
+                .card
+                    h4.text Untitled notebook 
+                    p.text Oct 28, 2024 - 0 sources
+                .card
+                    h4.text Untitled notebook 
+                    p.text Oct 28, 2024 - 0 sources
+                .card
+                    h4.text Untitled notebook 
+                    p.text Oct 28, 2024 - 0 sources
+            

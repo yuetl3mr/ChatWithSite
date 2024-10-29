@@ -25,7 +25,6 @@ const showTypingEffect = (text, textElement) => {
 const showLoadingAnimation = () => {
     const html = `
         <div class="message-content">
-            <img src="images/ai.png" alt="" class="avatar">
             <p class="text"></p>
             <div class="loading-indicator">
                 <div class="loading-bar"></div>
@@ -35,7 +34,7 @@ const showLoadingAnimation = () => {
         </div>
     `;
 
-    const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
+    const incomingMessageDiv = createMessageElement(html, "incoming");
     chatList.appendChild(incomingMessageDiv);
     handleIncomingChat(incomingMessageDiv);
 }
@@ -44,7 +43,6 @@ const handleOutgoingChat = () => {
     if (!userMessage) return;
     const html = `
         <div class="message-content">
-            <img src="images/avt.jpg" alt="" class="avatar">
             <p class="text">${userMessage}</p>
         </div>
     `;
@@ -98,9 +96,9 @@ toggle.addEventListener('click', () => {
     sidebar.classList.toggle('close');
     if (sidebar.classList.contains('close')) {
         content.style.marginLeft = '0px';
-        header.style.paddingLeft = '0px';
+        // header.style.paddingLeft = '0px';
     } else {
-        content.style.marginLeft = '400px';
-        header.style.paddingLeft = '400px';
+        content.style.marginLeft = '250px';
+        // header.style.paddingLeft = '400px';
     }
 });

@@ -24,14 +24,12 @@ const model = new ChatOpenAI({
     }
 });
 
+const loader = new CheerioWebBaseLoader(
+    "https://docs.smith.langchain.com/user_guide"
+);
 
-module.exports.index = async (req, res) => {
+const index = async () => {
     try {
-        const webContext = req.body.web;
-        const inputText = req.body.input;
-        const loader = new CheerioWebBaseLoader(
-            webContext
-        );
         const docs = await loader.load();
         const questionAnsweringPrompt = ChatPromptTemplate.fromMessages([
             ["system", SYSTEM_TEMPLATE],
@@ -42,10 +40,12 @@ module.exports.index = async (req, res) => {
             prompt: questionAnsweringPrompt,
         });
         const out = await documentChain.invoke({
-            messages: [new HumanMessage(inputText)],
+            messages: [new HumanMessage("Can LangSmith help test my LLM applications?")],
             context: docs,
         });
-        res.json(out);
+        console.log(out);
     } catch (error) {
     }
 };
+
+index();

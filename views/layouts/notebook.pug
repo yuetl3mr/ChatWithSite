@@ -2,14 +2,13 @@ doctype html
 html
     head
         title #{pageTitle}
-        link(rel="stylesheet" href="/css/styles.css")
+        link(rel="stylesheet" href="/css/notebook.css")
     body
         include ../partials/header.pug
-        //- .container
-        //-     include ../partials/sidebar.pug
-        //-     .content
-        block main   
-        //- include ../partials/footer.pug
+        .container
+            include ../partials/sidebar.pug
+            .content
+                block main   
         script(src="https://cdn.jsdelivr.net/npm/marked/marked.min.js")
         script(src="/js/script.js")
         script(src="https://kit.fontawesome.com/22a9f83a9e.js" crossorigin="anonymous")

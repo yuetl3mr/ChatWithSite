@@ -1,0 +1,308 @@
+Quickstart
+In this quickstart we'll show you how to:
+
+Get setup with LangChain and LangSmith
+Use the most basic and common components of LangChain: prompt templates, models, and output parsers
+Use LangChain Expression Language, the protocol that LangChain is built on and which facilitates component chaining
+Build a simple application with LangChain
+Trace your application with LangSmith
+That's a fair amount to cover! Let's dive in.
+
+Installation
+To install LangChain run:
+
+npm
+Yarn
+pnpm
+npm install langchain
+
+For more details, see our Installation guide.
+
+LangSmith
+Many of the applications you build with LangChain will contain multiple steps with multiple invocations of LLM calls. As these applications get more and more complex, it becomes crucial to be able to inspect what exactly is going on inside your chain or agent. The best way to do this is with LangSmith.
+
+Note that LangSmith is not needed, but it is helpful. If you do want to use LangSmith, after you sign up at the link above, make sure to set your environment variables to start logging traces:
+
+export LANGCHAIN_TRACING_V2="true"
+export LANGCHAIN_API_KEY="..."
+
+Building with LangChain
+LangChain enables building applications that connect external sources of data and computation to LLMs.
+
+In this quickstart, we will walk through a few different ways of doing that:
+
+We will start with a simple LLM chain, which just relies on information in the prompt template to respond.
+Next, we will build a retrieval chain, which fetches data from a separate database and passes that into the prompt template.
+We will then add in chat history, to create a conversational retrieval chain. This allows you interact in a chat manner with this LLM, so it remembers previous questions.
+Finally, we will build an agent - which utilizes an LLM to determine whether or not it needs to fetch data to answer questions.
+We will cover these at a high level, but keep in mind there is a lot more to each piece! We will link to more in-depth docs as appropriate.
+
+LLM Chain
+tip
+We're unifying model params across all packages. We now suggest using model instead of modelName, and apiKey for API keys.
+
+OpenAI
+Local (using Ollama)
+Anthropic
+First we'll need to install the LangChain OpenAI integration package:
+
+tip
+See this section for general instructions on installing integration packages.
+
+npm
+Yarn
+pnpm
+npm install @langchain/openai
+
+Accessing the API requires an API key, which you can get by creating an account here. Once we have a key we'll want to set it as an environment variable:
+
+OPENAI_API_KEY="..."
+
+If you'd prefer not to set an environment variable you can pass the key in directly via the apiKey named parameter when initiating the OpenAI Chat Model class:
+
+import { ChatOpenAI } from "@langchain/openai";
+
+const chatModel = new ChatOpenAI({
+  apiKey: "...",
+});
+
+Otherwise you can initialize without any params:
+
+import { ChatOpenAI } from "@langchain/openai";
+
+const chatModel = new ChatOpenAI({});
+
+Once you've installed and initialized the LLM of your choice, we can try using it! Let's ask it what LangSmith is - this is something that wasn't present in the training data so it shouldn't have a very good response.
+
+await chatModel.invoke("what is LangSmith?");
+
+AIMessage {
+  content: 'LangSmith refers to the combination of two surnames, Lang and Smith. It is most commonly used as a fictional or hypothetical name for a person or a company. This term may also refer to specific individuals or entities named LangSmith in certain contexts.',
+  additional_kwargs: { function_call: undefined, tool_calls: undefined }
+}
+
+
+We can also guide it's response with a prompt template. Prompt templates are used to convert raw user input to a better input to the LLM.
+
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+
+const prompt = ChatPromptTemplate.fromMessages([
+  ["system", "You are a world class technical documentation writer."],
+  ["user", "{input}"],
+]);
+
+We can now combine these into a simple LLM chain:
+
+const chain = prompt.pipe(chatModel);
+
+We can now invoke it and ask the same question:
+
+await chain.invoke({
+  input: "what is LangSmith?",
+});
+
+AIMessage {
+  content: 'LangSmith is a powerful programming language created for high-performance software development. It is designed to be efficient, intuitive, and capable of handling complex computations and data manipulations. With its extensive set of features and libraries, LangSmith provides developers with the tools necessary to build robust and scalable applications.\n' +
+    '\n' +
+    'Some key features of LangSmith include:\n' +
+    '\n' +
+    '1. Strong typing: LangSmith enforces type safety, preventing common programming errors and ensuring code reliability.\n' +
+    '\n' +
+    '2. Advanced memory management: The language provides built-in memory management mechanisms, such as automatic garbage collection, to optimize memory usage and reduce the risk of memory leaks.\n' +
+    '\n' +
+    '3. Multi-paradigm support: LangSmith supports both procedural and object-oriented programming paradigms, giving developers the flexibility to choose the most suitable approach for their projects.\n' +
+    '\n' +
+    '4. Modular design: The language promotes modular programming, allowing developers to organize their code into reusable components for easier maintenance and collaboration.\n' +
+    '\n' +
+    '5. High-performance libraries: LangSmith offers a rich set of libraries for various domains, including graphics, networking, database access, and more. These libraries enhance productivity by providing pre-built solutions for common tasks.\n' +
+    '\n' +
+    '6. Interoperability: LangSmith enables seamless integration with other programming languages, allowing developers to leverage existing codebases and resources.\n' +
+    '\n' +
+    "7. Extensibility: Developers can extend LangSmith's functionality through custom libraries and modules, allowing for the creation of domain-specific solutions.\n" +
+    '\n' +
+    'Overall, LangSmith aims to provide a robust and efficient development environment for creating software applications across various domains, from scientific simulations to web development and beyond.',
+  additional_kwargs: { function_call: undefined, tool_calls: undefined }
+}
+
+
+The model hallucinated an incorrect answer this time, but it did respond in a more proper tone for a technical writer!
+
+The output of a ChatModel (and therefore, of this chain) is a message. However, it's often much more convenient to work with strings. Let's add a simple output parser to convert the chat message to a string.
+
+import { StringOutputParser } from "@langchain/core/output_parsers";
+
+const outputParser = new StringOutputParser();
+
+const llmChain = prompt.pipe(chatModel).pipe(outputParser);
+
+await llmChain.invoke({
+  input: "what is LangSmith?",
+});
+
+LangSmith is a sophisticated online language translation tool. It leverages artificial intelligence and machine learning algorithms to provide accurate and efficient translation services across multiple languages. Whether it's translating documents, websites, or text snippets, LangSmith offers a seamless, user-friendly experience while maintaining the integrity and nuances of the original content. Its advanced features include context-aware translations, language customization options, and quality assurance checks, making it an invaluable tool for businesses, individuals, and language professionals alike.
+
+
+Diving deeper
+We've now successfully set up a basic LLM chain. We only touched on the basics of prompts, models, and output parsers - for a deeper dive into everything mentioned here, see this section of documentation.
+
+Retrieval Chain
+In order to properly answer the original question ("what is LangSmith?") and avoid hallucinations, we need to provide additional context to the LLM. We can do this via retrieval. Retrieval is useful when you have too much data to pass to the LLM directly. You can then use a retriever to fetch only the most relevant pieces and pass those in.
+
+In this process, we will look up relevant documents from a Retriever and then pass them into the prompt. A Retriever can be backed by anything - a SQL table, the internet, etc - but in this instance we will populate a vector store and use that as a retriever. For more information on vectorstores, see this documentation.
+
+First, we need to load the data that we want to index. We'll use a document loader that uses the popular Cheerio npm package as a peer dependency to parse data from webpages. Install it as shown below:
+
+npm
+Yarn
+pnpm
+npm install cheerio
+
+Then, use it like this:
+
+import { CheerioWebBaseLoader } from "langchain/document_loaders/web/cheerio";
+
+const loader = new CheerioWebBaseLoader(
+  "https://docs.smith.langchain.com/user_guide"
+);
+
+const docs = await loader.load();
+
+console.log(docs.length);
+console.log(docs[0].pageContent.length);
+
+45772
+
+Note that the size of the loaded document is large and may exceed the maximum amount of data we can pass in a single model call. We can split the document into more manageable chunks to get around this limitation and to reduce the amount of distraction to the model using a text splitter:
+
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+
+const splitter = new RecursiveCharacterTextSplitter();
+
+const splitDocs = await splitter.splitDocuments(docs);
+
+console.log(splitDocs.length);
+console.log(splitDocs[0].pageContent.length);
+
+60
+441
+
+Next, we need to index the loaded documents into a vectorstore. This requires a few components, namely an embedding model and a vectorstore.
+
+There are many options for both components. Here are some examples for accessing via OpenAI and via local models:
+
+OpenAI
+Local (using Ollama)
+Make sure you have the @langchain/openai package installed and the appropriate environment variables set (these are the same as needed for the model above).
+
+import { OpenAIEmbeddings } from "@langchain/openai";
+
+const embeddings = new OpenAIEmbeddings();
+
+Now, we can use this embedding model to ingest documents into a vectorstore. We will use a simple in-memory demo vectorstore for simplicity's sake:
+
+Note: If you are using local embeddings, this ingestion process may take some time depending on your local hardware.
+
+import { MemoryVectorStore } from "langchain/vectorstores/memory";
+
+const vectorstore = await MemoryVectorStore.fromDocuments(
+  splitDocs,
+  embeddings
+);
+
+The LangChain vectorstore class will automatically prepare each raw document using the embeddings model.
+
+Now that we have this data indexed in a vectorstore, we will create a retrieval chain. This chain will take an incoming question, look up relevant documents, then pass those documents along with the original question into an LLM and ask it to answer the original question.
+
+First, let's set up the chain that takes a question and the retrieved documents and generates an answer.
+
+import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+
+const prompt =
+  ChatPromptTemplate.fromTemplate(`Answer the following question based only on the provided context:
+
+<context>
+{context}
+</context>
+
+Question: {input}`);
+
+const documentChain = await createStuffDocumentsChain({
+  llm: chatModel,
+  prompt,
+});
+
+
+If we wanted to, we could run this ourselves by passing in documents directly:
+
+import { Document } from "@langchain/core/documents";
+
+await documentChain.invoke({
+  input: "what is LangSmith?",
+  context: [
+    new Document({
+      pageContent:
+        "LangSmith is a platform for building production-grade LLM applications.",
+    }),
+  ],
+});
+
+ LangSmith is a platform for building production-grade Large Language Model (LLM) applications.
+
+However, we want the documents to first come from the retriever we just set up. That way, for a given question we can use the retriever to dynamically select the most relevant documents and pass those in.
+
+import { createRetrievalChain } from "langchain/chains/retrieval";
+
+const retriever = vectorstore.asRetriever();
+
+const retrievalChain = await createRetrievalChain({
+  combineDocsChain: documentChain,
+  retriever,
+});
+
+We can now invoke this chain. This returns an object - the response from the LLM is in the answer key:
+
+const result = await retrievalChain.invoke({
+  input: "what is LangSmith?",
+});
+
+console.log(result.answer);
+
+ LangSmith is a tool developed by LangChain that is used for debugging and monitoring LLMs, chains, and agents in order to improve their performance and reliability for use in production.
+
+
+tip
+Check out this public LangSmith trace showing the steps of the retrieval chain.
+
+This answer should be much more accurate!
+
+Diving Deeper
+We've now successfully set up a basic retrieval chain. We only touched on the basics of retrieval - for a deeper dive into everything mentioned here, see this section of documentation.
+
+Conversational Retrieval Chain
+The chain we've created so far can only answer single questions. One of the main types of LLM applications that people are building are chat bots. So how do we turn this chain into one that can answer follow up questions?
+
+We can still use the createRetrievalChain function, but we need to change two things:
+
+The retrieval method should now not just work on the most recent input, but rather should take the whole history into account.
+The final LLM chain should likewise take the whole history into account.
+Updating Retrieval
+In order to update retrieval, we will create a new chain. This chain will take in the most recent input (input) and the conversation history (chat_history) and use an LLM to generate a search query.
+
+import { createHistoryAwareRetriever } from "langchain/chains/history_aware_retriever";
+import { MessagesPlaceholder } from "@langchain/core/prompts";
+
+const historyAwarePrompt = ChatPromptTemplate.fromMessages([
+  new MessagesPlaceholder("chat_history"),
+  ["user", "{input}"],
+  [
+    "user",
+    "Given the above conversation, generate a search query to look up in order to get information relevant to the conversation",
+  ],
+]);
+
+const historyAwareRetrieverChain = await createHistoryAwareRetriever({
+  llm: chatModel,
+  retriever,
+  rephrasePrompt: historyAwarePrompt,
+});
