@@ -10,8 +10,8 @@ const userSchema = new mongoose.Schema({
     default: generate.generateRandomString(20)
   },
   avatar: {
-    type : String,
-    default : ""
+    type: String,
+    default: ""
   },
   deleted: {
     type: Boolean,

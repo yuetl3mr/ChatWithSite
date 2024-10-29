@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+#card-container {
+    background-color: #212228;
+    background-image: linear-gradient(#292a30 .1em, transparent .1em),
+        linear-gradient(90deg, #292a30 .1em, transparent .1em);
+    background-size: 4em 4em;
+    height: 100vh;
+}
+
+
+.card {
+    width: auto;
+    height: auto;
+    max-width: 300px;
+    background-color: #AFDA9F;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute; /* Đặt thành absolute để dễ dàng kéo thả */
+    padding: 10px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+
+.resizer {
+    width: 10px;
+    height: 10px;
+    background-color: #AFDA9F;
+    border-radius: 50%; 
+    cursor: se-resize; 
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white; 
+    cursor: pointer;
+    font-size: 16px;
+    align-self: flex-end; 
+}

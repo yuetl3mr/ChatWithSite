@@ -39,8 +39,13 @@ header nav {
     display: flex;
 }
 
+.button a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
 .button .logo {
-    margin-top: 8px;
     margin-left: 15px;
     font-size: 28px;
     font-weight: 550;
@@ -471,4 +476,16 @@ header nav {
     border: none; 
     cursor: pointer; 
     color: black; 
+}
+
+
+.save-button {
+    float: right;
+    margin: 10px; 
+    padding: 8px 12px; 
+    background-color: #e4e8ed; 
+    color: rgb(35, 34, 34); 
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
 }

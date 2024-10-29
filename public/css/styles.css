@@ -31,8 +31,13 @@ header nav {
     display: flex;
 }
 
+.button a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
 .button .logo {
-    margin-top: 8px;
     margin-left: 15px;
     font-size: 28px;
     font-weight: 550;
@@ -54,12 +59,39 @@ header nav {
 }
 
 .button button i {
+    display: none;
     font-size: 20px;
 }
 
 .auth {
     margin-right: 20px;
+    display: flex;
 }
+
+.auth .go-note {
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 10px 0;
+    margin-right: 20px; 
+    text-align: center; 
+    width: 100%; 
+}
+
+.auth .go-note:hover{
+    background-color: black;
+}
+
+.auth .go-note:hover a {  
+    color: white; 
+}
+
+.auth .go-note a{
+    padding: 10px;
+    color: black; 
+    text-decoration: none; 
+    font-size: 14px; 
+}
+
 
 .avtbtn {
     border: none;
@@ -88,6 +120,7 @@ header nav {
 .welcome {
     display: flex;
     flex-direction: column;
+    align-items: center;
     padding-top: 140px;
     padding-left: 150px;
     padding-right: 150px;
@@ -113,14 +146,18 @@ header nav {
     margin-bottom: 15px;
 }
 
-.notebook button {
+.notebook {
+    margin-top: 50px;
+}
+
+.notebook a {
+    text-decoration: none;
     background: linear-gradient(90deg, #3882f6, #328fb7, #2e9a80, #28a545);
     color: rgb(246, 237, 237);
     border: none;
     border-radius: 30px;
-    font-size: 14px;
-    width: 120px;
-    height: 35px;
+    font-size: 20px;
+    padding : 10px;
     cursor: pointer;
 }
 
@@ -356,9 +393,5 @@ header nav {
     transition: 0.5s;
 }
 
-.div-line {
-    border-top: 1px solid rgba(204, 204, 204, 0.5);
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
 /* End sidebar  */
+

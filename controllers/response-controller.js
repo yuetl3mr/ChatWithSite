@@ -27,15 +27,12 @@ const model = new ChatOpenAI({
     },
 });
 
+
+// [POST] /response
 module.exports.index = async (req, res) => {
     try {
         const { input, urls } = req.body; // Destructure input and urls from request body
-        console.log(input);
-        console.log(urls);
         // Validate the urls input
-        if (!Array.isArray(urls) || urls.length === 0) {
-            return res.status(400).json({ error: 'Invalid or empty URLs array.' });
-        }
 
         const allDocs = [];
 
@@ -86,7 +83,6 @@ module.exports.index = async (req, res) => {
             messages: [new HumanMessage(input)],
         });
         res.json(result);
-        console.log(result);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'An error occurred while processing your request.' });

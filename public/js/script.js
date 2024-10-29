@@ -11,11 +11,11 @@ const createMessageElement = (content, ...classes) => {
     return div;
 }
 
-const showTypingEffect = (text, textElement) => {
+const showTypingEffect = async (text, textElement, incomingMessageDiv) => {
     const words = text.split(' ');
     let currIndex = 0;
 
-    const typingInterval = setInterval(() => {
+    const typingInterval = await setInterval(() => {
         textElement.innerText += (currIndex === 0 ? '' : ' ') + words[currIndex++];
 
         if (currIndex === words.length) {
@@ -27,7 +27,10 @@ const showTypingEffect = (text, textElement) => {
 const showLoadingAnimation = () => {
     const html = `
         <div class="message-content">
-            <p class="text"></p>
+            <form action="/note/create" method="POST" class="note-form">
+                <input type="hidden" name="noteContent" value=""/>
+                <p class="text"></p>
+            </form>
             <div class="loading-indicator">
                 <div class="loading-bar"></div>
                 <div class="loading-bar"></div>
@@ -46,7 +49,7 @@ const handleOutgoingChat = () => {
     scrollToBottom();
     // Disable submit button to prevent further submissions
     submitButton.disabled = true;
-    
+
     const html = `
         <div class="message-content">
             <p class="text">${userMessage}</p>
@@ -61,7 +64,7 @@ const handleOutgoingChat = () => {
 const handleIncomingChat = async (incomingMessageDiv) => {
     const textElement = incomingMessageDiv.querySelector(".text");
 
-    const urlList = Array.from(sourceList.children).map(li => li.dataset.url); 
+    const urlList = Array.from(sourceList.children).map(li => li.dataset.url);
 
     try {
         const response = await fetch('/response', {
@@ -78,9 +81,22 @@ const handleIncomingChat = async (incomingMessageDiv) => {
 
         const data = await response.json();
         scrollToBottom();
-        showTypingEffect(data.content, textElement);
-        console.log(data);
-        console.log(data.kwargs.content);
+        showTypingEffect(data.content, textElement, incomingMessageDiv);
+        const hiddenInput = incomingMessageDiv.querySelector('input[name="noteContent"]');
+        hiddenInput.value = data.content;
+
+
+        const saveButton = document.createElement("button");
+        saveButton.innerText = "Save to Note";
+        saveButton.type = "submit";
+        saveButton.classList.add("save-button");
+
+        // Insert the button after the text paragraph
+        textElement.insertAdjacentElement('afterend', saveButton);
+        console.log(incomingMessageDiv)
+
+        // console.log(data);
+        // console.log(data.kwargs.content);
     } catch (error) {
         console.error(error);
     } finally {
@@ -116,7 +132,7 @@ toggle.addEventListener('click', () => {
 function scrollToBottom() {
     window.scrollTo({
         top: document.documentElement.scrollHeight,
-        behavior: 'smooth' 
+        behavior: 'smooth'
     });
 }
 
@@ -132,7 +148,7 @@ function addSource(event) {
 
     if (newSourceURL) {
         const li = document.createElement('li');
-        li.dataset.url = newSourceURL; 
+        li.dataset.url = newSourceURL;
         li.innerHTML = `
             <span class="source-text">${newSourceURL}</span> 
             <button class="delete-button">
@@ -140,9 +156,9 @@ function addSource(event) {
             </button>
         `;
         sourceList.appendChild(li);
-        input.value = ''; 
+        input.value = '';
         updateEmptyState();
-        
+
         li.querySelector('.delete-button').addEventListener('click', () => {
             li.remove();
             updateEmptyState();

@@ -72,6 +72,7 @@ module.exports.loginPost = async (req, res) => {
     }
     console.log("OK");
     res.cookie("tokenUser", user.token);
+    res.cookie("tokenId", user._id);
     res.redirect("/");
 }
 

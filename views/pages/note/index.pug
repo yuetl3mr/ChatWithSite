@@ -1,0 +1,9 @@
+extends ../../layouts/note.pug
+
+block main
+    div#card-container
+        each note in Notes
+            div.card
+                div.resizer
+                p= note.content
+                button.close-btn X
