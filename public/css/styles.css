@@ -356,4 +356,9 @@ header nav {
     transition: 0.5s;
 }
 
+.div-line {
+    border-top: 1px solid rgba(204, 204, 204, 0.5);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 /* End sidebar  */

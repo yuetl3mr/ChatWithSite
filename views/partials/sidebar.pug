@@ -1,9 +1,14 @@
 nav.sidebar.close 
     .sidebar-content
-        .add-sources 
+        .sidebar-head
             span Sources 
             i.fa-brands.fa-osi
-        button
-            i.fa-regular.fa-square-plus
+        .add-sources
+            form.add-form
+                input(type="url" class="add-input" placeholder="Add source URL" required)
+                button(type="submit" class="add-button")
+                    i.fa-regular.fa-square-plus
+        .line
         .source-list 
+            ul
             

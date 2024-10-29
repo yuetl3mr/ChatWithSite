@@ -24,7 +24,7 @@ header {
     /* position: relative; */
     background-color: white;
     z-index: 9999;
-    transition: 0.2s;
+    transition: 0.3s;
     border-bottom: 1px solid rgba(204, 204, 204, 0.5);
 }
 
@@ -66,7 +66,32 @@ header nav {
 }
 
 .auth {
+    display: flex;
     margin-right: 20px;
+}
+
+.auth .go-note {
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 10px 0;
+    margin-right: 20px; 
+    text-align: center; 
+    width: 100%; 
+}
+
+.auth .go-note:hover{
+    background-color: black;
+}
+
+.auth .go-note:hover a {  
+    color: white; 
+}
+
+.auth .go-note a{
+    padding: 10px;
+    color: black; 
+    text-decoration: none; 
+    font-size: 14px; 
 }
 
 .avtbtn {
@@ -192,6 +217,14 @@ header nav {
     /* align-items: center;  */
 }
 
+.chat-list .message.incoming {
+    max-width: 70%;
+    display: flex;
+    justify-content: flex-start;
+    align-self: flex-start;
+    text-align: left;
+}
+
 .chat-list .message.outgoing {
     display: flex;
     justify-content: flex-end;
@@ -290,7 +323,7 @@ header nav {
     width: 250px;
     background: white;
     z-index: 1000;
-    transition: 0.2s;
+    transition: 0.3s;
     border-right: 1px solid rgba(204, 204, 204, 0.5);
 }
 
@@ -300,7 +333,7 @@ header nav {
 
 .sidebar .sidebar-content {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     padding: 10px;
     padding-right: 30px;
@@ -312,14 +345,14 @@ header nav {
     opacity: 0;
     transform: translateX(-100%);
     pointer-events: none;
-    transition: 0.2s;
 }
 
 .content {
-    transition: 0.2s;
+    transition: 0.3s;
 }
 
-.sidebar .add-sources {
+.sidebar .sidebar-head {
+    padding-bottom: 10px;
     font-size: 17px;
     font-weight: 600;
     display: flex;
@@ -337,6 +370,105 @@ header nav {
 .sidebar-content {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
 }
 
+.sidebar .add-sources i {
+    font-size: 20px;
+}
+
+.sidebar .add-input {
+    margin-right: 10px;
+    border-radius: 10px;
+    height: 25px;
+    padding: 7px;
+}
+
+.line {
+    width: 100%;
+    height: 2px;
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 /* End sidebar  */
+
+.source-list {
+    max-height: 300px;  
+    width: 100%;
+    overflow-y: auto;  
+    margin-top: 10px;  
+    padding: 10px;     
+    border: 1px solid rgba(0, 0, 0, 0.5); 
+    border-radius: 8px; 
+    background-color: white; 
+}
+
+.source-list.empty {
+    border: none; 
+}
+
+.source-list ul {
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
+}
+
+.source-list li {
+    padding: 8px; 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2); 
+}
+
+.source-list li:last-child {
+    border-bottom: none; 
+}
+
+.source-list li:hover {
+    background-color: rgba(0, 0, 0, 0.05); 
+    cursor: pointer; 
+}
+
+.delete-button {
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    margin-left: 10px; 
+    color: black; 
+}
+
+.delete-button i {
+    font-size: 16px; 
+}
+
+.source-list li {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 8px; 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2); 
+}
+
+.source-list li {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 8px; 
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2); 
+    overflow: hidden; /* Prevent overflow */
+}
+
+.source-list li .source-text {
+    flex-grow: 1; 
+    margin-right: 10px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+}
+
+
+.delete-button {
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    color: black; 
+}
