@@ -27,7 +27,7 @@ const showTypingEffect = async (text, textElement, incomingMessageDiv) => {
 const showLoadingAnimation = () => {
     const html = `
         <div class="message-content">
-            <form action="/note/create" method="POST" class="note-form">
+            <form class="note-form">
                 <input type="hidden" name="noteContent" value=""/>
                 <p class="text"></p>
             </form>
@@ -43,6 +43,25 @@ const showLoadingAnimation = () => {
     chatList.appendChild(incomingMessageDiv);
     handleIncomingChat(incomingMessageDiv);
 }
+
+const handleNoteFormSubmission = (noteContent) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/note/create", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                console.log("Note saved successfully.");
+            } else {
+                console.error("Error saving note:", xhr.statusText);
+            }
+        }
+    };
+
+    const data = JSON.stringify({ noteContent });
+    xhr.send(data);
+};
 
 const handleOutgoingChat = () => {
     if (!userMessage) return;
@@ -61,9 +80,9 @@ const handleOutgoingChat = () => {
     typingForm.reset();
 }
 
+
 const handleIncomingChat = async (incomingMessageDiv) => {
     const textElement = incomingMessageDiv.querySelector(".text");
-
     const urlList = Array.from(sourceList.children).map(li => li.dataset.url);
 
     try {
@@ -72,7 +91,7 @@ const handleIncomingChat = async (incomingMessageDiv) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ input: userMessage, urls: urlList }), // Include userMessage and urls
+            body: JSON.stringify({ input: userMessage, urls: urlList }), 
         });
 
         if (!response.ok) {
@@ -82,29 +101,27 @@ const handleIncomingChat = async (incomingMessageDiv) => {
         const data = await response.json();
         scrollToBottom();
         showTypingEffect(data.content, textElement, incomingMessageDiv);
+
         const hiddenInput = incomingMessageDiv.querySelector('input[name="noteContent"]');
         hiddenInput.value = data.content;
 
-
         const saveButton = document.createElement("button");
         saveButton.innerText = "Save to Note";
-        saveButton.type = "submit";
         saveButton.classList.add("save-button");
 
-        // Insert the button after the text paragraph
-        textElement.insertAdjacentElement('afterend', saveButton);
-        console.log(incomingMessageDiv)
+        saveButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            handleNoteFormSubmission(data.content);
+        });
 
-        // console.log(data);
-        // console.log(data.kwargs.content);
+        textElement.insertAdjacentElement('afterend', saveButton);
     } catch (error) {
         console.error(error);
     } finally {
         incomingMessageDiv.classList.remove("loading");
-        // Re-enable submit button after receiving the response
         submitButton.disabled = false;
     }
-}
+};
 
 typingForm.addEventListener("submit", (e) => {
     userMessage = typingForm.querySelector(".typing-input").value.trim();

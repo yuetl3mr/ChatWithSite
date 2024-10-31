@@ -32,10 +32,7 @@ const model = new ChatOpenAI({
 module.exports.index = async (req, res) => {
     try {
         const { input, urls } = req.body; // Destructure input and urls from request body
-        // Validate the urls input
-
         const allDocs = [];
-
         // Load documents from each URL
         for (const url of urls) {
             const loader = new CheerioWebBaseLoader(url);
