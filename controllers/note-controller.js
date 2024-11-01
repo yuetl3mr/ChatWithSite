@@ -30,7 +30,8 @@ module.exports.create = async (req, res) => {
 
     console.log(note);
     await note.save();
-    res.redirect("/note");  
+    req.flash("info", "Update Success!");
+    res.redirect("back");  
 }
 
 // [PATH] /note/edit/:id

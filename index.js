@@ -4,32 +4,39 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const database = require("./config/database");
 const cookieParser = require('cookie-parser');
-
-
+const flash = require('express-flash');
+const session = require('express-session');  
 
 const port = 3000;
 const app = express();
-
-app.use(methodOverride("_method"));
-
 database.connect();
 
-
+app.use(methodOverride("_method"));
 app.use(express.static(`${__dirname}/public`));
 
-//middleware
+// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 app.use(cookieParser());
-app.use(express.json());
 
-// Pug
+// Session configuration
+app.use(session({
+    secret: 'i love cat :3',  
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 }
+}));
+
+// Flash
+app.use(flash());
+
+// Pug setup
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
+// Routes
 route(app);
 
 app.listen(port, () => {
-    console.log(`App listen on port ${port}`);
+    console.log(`App listening on port ${port}`);
 });
