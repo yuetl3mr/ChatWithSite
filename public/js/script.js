@@ -3,6 +3,7 @@ const typingForm = document.querySelector(".typing-form");
 const chatList = document.querySelector(".chat-list");
 const submitButton = typingForm.querySelector("button[type='submit']");
 var userMessage;
+var fileContent = "";
 
 const createMessageElement = (content, ...classes) => {
     const div = document.createElement("div");
@@ -83,7 +84,15 @@ const handleOutgoingChat = () => {
 
 const handleIncomingChat = async (incomingMessageDiv) => {
     const textElement = incomingMessageDiv.querySelector(".text");
-    const urlList = Array.from(sourceList.children).map(li => li.dataset.url);
+    const dataset = Array.from(sourceList.children).map(li => li.dataset);
+    const urls = [];
+    dataset.forEach(item => {
+        if (item.url) {
+            urls.push(item.url);
+        }
+    });
+
+    console.log(fileContent);
 
     try {
         const response = await fetch('/response', {
@@ -91,7 +100,7 @@ const handleIncomingChat = async (incomingMessageDiv) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ input: userMessage, urls: urlList }), 
+            body: JSON.stringify({ input: userMessage, urls: urls, content: fileContent }),
         });
 
         if (!response.ok) {
@@ -184,27 +193,37 @@ function addSource(event) {
 }
 
 const fileInput = document.querySelector('#source-file');
-
 fileInput.addEventListener('change', () => {
-    const uploadedFile = fileInput.files[0]; 
+    const uploadedFiles = fileInput.files;
 
-    if (uploadedFile) {
-        const li = document.createElement('li');
-        li.dataset.file = uploadedFile.name; 
-        li.innerHTML = `
-            <span class="source-text">File: ${uploadedFile.name}</span> 
-            <button class="delete-button">
-                <i class="fa-regular fa-trash-can"></i>
-            </button>
-        `;
-        sourceList.appendChild(li);
-        fileInput.value = ''; 
-        li.querySelector('.delete-button').addEventListener('click', () => {
-            li.remove();
-            updateEmptyState();
-        });
+    if (uploadedFiles.length > 0) {
+        for (let i = 0; i < uploadedFiles.length; i++) {
+            const uploadedFile = uploadedFiles[i];
+            const li = document.createElement('li');
+            li.dataset.file = uploadedFile.name; 
+            li.innerHTML = `
+                <span class="source-text">File: ${uploadedFile.name}</span> 
+                <button class="delete-button">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            `;
+            sourceList.appendChild(li);
 
-        updateEmptyState(); 
+            // Create a FileReader to read the content of the file
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const content = event.target.result; // Get the content of the file
+                fileContent += content; // Append the content to the string
+            };
+            reader.readAsText(uploadedFile); // Read the file as text
+
+            li.querySelector('.delete-button').addEventListener('click', () => {
+                li.remove();
+                updateEmptyState();
+            });
+        }
+        fileInput.value = ''; // Clear input after handling files
+        updateEmptyState();
     }
 });
 

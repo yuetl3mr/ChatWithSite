@@ -8,7 +8,7 @@ const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
 const { OpenAIEmbeddings } = require("@langchain/openai");
 const { MemoryVectorStore } = require("langchain/vectorstores/memory");
 const { RunnablePassthrough, RunnableSequence } = require("@langchain/core/runnables");
-
+const { Document } = require ("@langchain/core/documents")
 config();
 
 const SYSTEM_TEMPLATE = `Answer user questions or summarize context if required based on the below context. 
@@ -31,8 +31,20 @@ const model = new ChatOpenAI({
 // [POST] /response
 module.exports.index = async (req, res) => {
     try {
-        const { input, urls } = req.body; // Destructure input and urls from request body
+        const { input, urls, content } = req.body; // Destructure input and urls from request body
         const allDocs = [];
+        // Load documents from file 
+        if (typeof content === 'string') {
+            allDocs.push(new Document({
+                pageContent: content,
+                metadata: { source: 'file-content' }, 
+            }));
+        } else if (Array.isArray(content)) {
+            allDocs.push(...content.map(text => new Document({
+                pageContent: text,
+                metadata: { source: 'file-content' },
+            })));
+        }
         // Load documents from each URL
         for (const url of urls) {
             const loader = new CheerioWebBaseLoader(url);
@@ -44,6 +56,7 @@ module.exports.index = async (req, res) => {
             chunkSize: 500,
             chunkOverlap: 20,
         });
+        
 
         const allSplits = await textSplitter.splitDocuments(allDocs);
 
