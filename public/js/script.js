@@ -183,6 +183,31 @@ function addSource(event) {
     }
 }
 
+const fileInput = document.querySelector('#source-file');
+
+fileInput.addEventListener('change', () => {
+    const uploadedFile = fileInput.files[0]; 
+
+    if (uploadedFile) {
+        const li = document.createElement('li');
+        li.dataset.file = uploadedFile.name; 
+        li.innerHTML = `
+            <span class="source-text">File: ${uploadedFile.name}</span> 
+            <button class="delete-button">
+                <i class="fa-regular fa-trash-can"></i>
+            </button>
+        `;
+        sourceList.appendChild(li);
+        fileInput.value = ''; 
+        li.querySelector('.delete-button').addEventListener('click', () => {
+            li.remove();
+            updateEmptyState();
+        });
+
+        updateEmptyState(); 
+    }
+});
+
 
 addForm.addEventListener('submit', addSource);
 

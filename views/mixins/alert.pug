@@ -5,6 +5,6 @@ mixin alert-success(time)
 
 
 mixin alert-error(time)
-    - if (messages.danger)
+    - if (messages.error)
         .message.info
-            div(class="alert alert-danger" show-alert data-time=time) #{messages.danger} 
+            div(class="alert alert-danger" show-alert data-time=time) #{messages.error} 

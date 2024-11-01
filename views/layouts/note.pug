@@ -1,10 +1,13 @@
+include ../mixins/alert.pug
+
 doctype html
 html
     head
         title #{pageTitle}
         link(rel="stylesheet" href="/css/note.css")
     body
-        
+        +alert-error(5000)
+        +alert-success(3000)
         block main   
         
         script(src="/js/note.js")

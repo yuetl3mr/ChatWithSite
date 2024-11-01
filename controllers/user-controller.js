@@ -55,6 +55,7 @@ module.exports.loginPost = async (req, res) => {
     });
     console.log(req.body.email);
     if (!user) {
+        req.flash("error", "Error!");
         res.redirect("back");
         return;
     }

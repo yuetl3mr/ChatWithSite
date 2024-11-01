@@ -30,7 +30,6 @@ module.exports.create = async (req, res) => {
 
     console.log(note);
     await note.save();
-    req.flash("info", "Update Success!");
     res.redirect("back");  
 }
 

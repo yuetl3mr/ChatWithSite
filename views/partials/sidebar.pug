@@ -5,9 +5,13 @@ nav.sidebar.close
             i.fa-brands.fa-osi
         .add-sources
             form.add-form
-                input(type="url" class="add-input" placeholder="Add source URL" required)
-                button(type="submit" class="add-button")
-                    i.fa-regular.fa-square-plus
+                .add-url
+                    input(type="url" class="add-input" placeholder="Add source URL" enctype="multipart/form-data" required)
+                    button(type="submit" class="add-button")
+                        i.fa-regular.fa-square-plus
+                .add-file
+                    input(type="file" name="file" id="source-file")
+                    label(for="source-file") Upload source file 
         .line
         .source-list 
             ul

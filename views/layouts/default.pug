@@ -1,9 +1,13 @@
+include ../mixins/alert.pug
+
 doctype html
 html
     head
         title #{pageTitle}
         link(rel="stylesheet" href="/css/styles.css")
     body
+        +alert-error(5000)
+        +alert-success(3000)
         include ../partials/header.pug
         //- .container
         //-     include ../partials/sidebar.pug
