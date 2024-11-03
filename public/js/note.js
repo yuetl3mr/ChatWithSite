@@ -53,6 +53,27 @@ document.querySelectorAll('.card').forEach(card => {
 
     // Close button functionality
     closeButton.addEventListener('click', function() {
-        card.remove(); // Xóa thẻ card khỏi DOM
+        card.remove(); // Remove the card from DOM
     });
+
 });
+
+
+const addNote = document.querySelector('.add-note-btn');
+const noteContainer = document.querySelector('#card-container');
+
+addNote.addEventListener("click", (e) => {
+    const cardDiv = document.createElement('div');
+    cardDiv.classList.add('card');
+    
+    cardDiv.innerHTML = `
+        <div class="resizer"></div>
+        <textarea class="note-content" oninput="updateNoteContent(this, note.id)">
+        </textarea>
+        <button class="close-btn">X</button>
+    `;
+    
+    noteContainer.appendChild(cardDiv);
+});
+
+

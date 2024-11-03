@@ -33,14 +33,16 @@ const showLoadingAnimation = () => {
                 <p class="text"></p>
             </form>
             <div class="loading-indicator">
-                <div class="loading-bar"></div>
-                <div class="loading-bar"></div>
-                <div class="loading-bar"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
             </div>
         </div>
     `;
 
-    const incomingMessageDiv = createMessageElement(html, "incoming");
+    const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
     chatList.appendChild(incomingMessageDiv);
     handleIncomingChat(incomingMessageDiv);
 }
@@ -53,6 +55,7 @@ const handleNoteFormSubmission = (noteContent) => {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
+                showSuccessAlert("Note saved successfully.");
                 console.log("Note saved successfully.");
             } else {
                 console.error("Error saving note:", xhr.statusText);
@@ -239,3 +242,7 @@ function updateEmptyState() {
 }
 
 updateEmptyState();
+
+// Show Alert
+
+// End Show Alert 
