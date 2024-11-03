@@ -4,7 +4,7 @@ NotebookAI is a website that integrates AI to help users chat with their own dat
 
 ## Demo
 
-https://github.com/user-attachments/assets/5fb3f7eb-91f4-4b19-b2d7-99d1786accf7
+https://github.com/user-attachments/assets/8dfda7b1-2430-453d-a770-754969e1d7ac
 
 ## Installation
 
