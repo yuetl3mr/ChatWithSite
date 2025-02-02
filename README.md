@@ -1,6 +1,6 @@
-﻿# NotebookAI
+﻿# ChatWithSite
  
-NotebookAI is a website that integrates AI to help users chat with their own data or chat with any website in the world.
+ChatWithSite is a website that integrates AI to help users chat with their own data or chat with any website in the world.
 
 ## Demo
 
